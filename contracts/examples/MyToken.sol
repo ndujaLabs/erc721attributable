@@ -14,11 +14,11 @@ contract MyToken is ERC721, Ownable, IAttributable {
     uint256 _id,
     address _player,
     uint8 _index
-  ) external view returns (uint256) {
+  ) external view override returns (uint256) {
     return _tokenAttributes[_id][_player][_index];
   }
 
-  function authorizePlayer(uint256 _id, address _player) external {
+  function authorizePlayer(uint256 _id, address _player) external override {
     require(ownerOf(_id) == _msgSender(), "Not the owner");
     require(_tokenAttributes[_id][_player][0] == 0, "Player already authorized");
     _tokenAttributes[_id][_player][0] = 1;
@@ -28,7 +28,7 @@ contract MyToken is ERC721, Ownable, IAttributable {
     uint256 _id,
     uint8 _index,
     uint256 _attributes
-  ) external {
+  ) external override {
     require(_tokenAttributes[_id][_msgSender()][0] != 0, "Player not authorized");
     // notice that if the playes set the attributes to zero, it de-authorize itself
     // and not more changes will be allowed until the NFT owner authorize it again

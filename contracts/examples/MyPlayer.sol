@@ -30,7 +30,7 @@ contract MyPlayer is IPlayer, Ownable {
     IAttributable(_nft).updateAttributes(tokenId, 0, attributes);
   }
 
-  function attributesOf(address _nft, uint256 tokenId) external view returns (string memory) {
+  function attributesOf(address _nft, uint256 tokenId) external override view returns (string memory) {
     uint256 _attributes = IAttributable(_nft).attributesOf(tokenId, address(this), 0);
     if (_attributes != 0) {
       return
