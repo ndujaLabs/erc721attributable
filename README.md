@@ -3,36 +3,57 @@ A proposal for a standard approach to attributes on chain
 
 ### THIS IS A WORK IN PROGRESS
 
-
 ## Premise
 
 In 2021, I proposed a standard for on-chain attributes for NFT at https://github.com/ndujaLabs/erc721playable  
 
 It was using an array of uint8 to store generic attributes.
 
-After a few iterations and attempt to implement it I realized that it is very unlikely that a player, for example, a game can be fine with just storing uint8 values. Most likely it will need multiple types that defies the advantages of that approach.
+After a few iterations and attempts to implement it, I realized that it is unlikely that a player, for example, a game, can be okay with just storing uint8 values. It will most likely need multiple types that defy the advantages of that approach.
 
-Investigating the possible alternatives, I reach the conclusion that the best way to have generic values is to encode them in an array of uint256, asking the player to translate them in parameters that can be understood, for example, by a marketplace.
+Investigating the possible alternatives, I concluded that the best way to have generic values is to encode them in an array of uint256, asking the player to translate them into parameters that can be understood, for example, by a marketplace.
 
-Let's say that you have an NFT that start in a game at level 2, but later can be leveled up. Where do you store the info about the level? If you put it in the JSON metadata, you break one of the rules of the NFT, the immutability of the attributes (very important for collectors). The solution is to split the attributes in two categories: mutable and immutable attributes.
+Let's say you have an NFT that starts in a game at level 2 but later can level up. Where do you store the info about the level? If you put it in the JSON metadata, you break one of the rules of the NFT, the immutability of the attributes (essential for collectors). The solution is to split the attributes into two categories: mutable and immutable attributes.
 
-There are a few proposal to extend the metadata provided by JSON files, like https://eips.ethereum.org/EIPS/eip-4906
+There are a few proposals to extend the metadata provided by JSON files (like https://eips.ethereum.org/EIPS/eip-4906). The problem is that smart contracts can't read dynamic parameters off-chain, which is the problem I am trying to solve here.
 
-The problem is that smart contracts can't read dynamic parameters off-chain, which is the problem I am trying to solve here. 
+## Why do we need a common standard for on-chain metadata?
 
-## The data
+People talks every day about having NFTs that can be moved around games. The problem is that, despite the good intention, that is not possible in most cases. A standard NFT is not intended for it. What it misses is the flexibility necessary to allow any player out there (a game, a metaverse, whatever) to use the NFT inside a game, in total transparency, and in a shared way. The idea behind Attributable is that your NFT:
 
-The idea is to have in the NFT a flexible format for the data, so that even if the contract is upgraded requiring a different set of information, it is still possible to upgrade the contract keeping a compatible storage. Look at this map:
+1. can be used by any game, i.e., any game access the data in the same format, encoding/decoding them for its purposes
+2. only the NFT owner can authorize the game
+3. only the game can modify its attributes
+
+Point 2 is necessary because you don't want any player adds data to your NFT. For example, a porn game can add you PfP. Maybe you don't like it. For sure, you don't want it if the player is involved in some criminal activity.
+
+Point 3 is necessary because you can cheat after you authorize a game if you alter the data that the game sets. For example, in Mobland, a character can be wounded and go into a coma. If that character is not cured in the maximum allowed time, the character will die. On the market, a dead character will probably have a much lower value than a character in good health. But, right now, there is no way to get it. If the character is Attributable, that value can be stored in the NFT and be visible to anyone.
+
+How? A marketplace like OpenSea can listen to the emitted event and record any new authorization. Then, it can query the authorized game to get the on-chain attributes of that NFT. (Of course, the game can also set off-chain dynamic attributes to make its data more broadly available.)
+
+Point 1 is essential. The data must be stored most generically to allow cross-game maneuverability. The choice then is between uint256 and bytes32. My preference is for using big integers because it looks to be easier to play with.
+
+When you have big integers that encode information, you just need a map based on tokenId and game address. A basic approach would be setting the data as:
 
 ```solidity
-  mapping(uint256 => mapping(address => mapping(uint8 => uint256))) internal _tokenAttributes;
+mapping(uint256 => mapping(address => uint256)) internal _tokenAttributes;
+```
+The problem is that sometimes, a single integer is not enough. So, a better solution is to have an "array" of big integers. My preferred map would be
+
+```solidity
+mapping(uint256 => mapping(address => mapping(uint8 => uint256))) internal _tokenAttributes;
 ```
 
-It is supposed to be used as
+This way, you can have a maximum of 256 values which should cover the 99.9% of the use cases.
+
+Regardless, the optimal data format is not central. What is more important here is to define how the NFT (or any other asset with an ID) interfaces with the game.
+
+Another advantage of this approach is that it allows upgrading a contract keeping the storage compatible with previous versions. Look at this map:
+
+The map above is supposed to be used as
 ```solidity
 _tokenAttributes[tokenId][playerAddress][index]
 ```
-In most cases, a single index, 0, will be enough. But having the possibility of extending to a max of 256 values, cover almost every possible need.
 
 ## The interfaces
 
