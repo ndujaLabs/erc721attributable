@@ -12,11 +12,6 @@ pragma solidity ^0.8.4;
 /* is IERC165 */
 interface IAttributable {
   /**
-      @notice The comments above refer to an NFT, but the same approach can be used
-              with other classes of assets.
-   */
-
-  /**
      @dev Emitted when the attributes for an id and a player is set.
           The function must be called by the owner of the asset to authorize a player to set
           attributes on it. The rules for that are left to the asset.

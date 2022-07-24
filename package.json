@@ -1,6 +1,6 @@
 {
   "name": "attributable",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A proposal for on-chain attributes for NFT and other assets",
   "publishConfig": {
     "access": "public"
@@ -15,7 +15,7 @@
     "format": "npx prettier --write ./test/fixtures/**/*.js ./**/*.js",
     "postinstall": "./post-install.sh"
   },
-  "author": "",
+  "author": "Francesco Sullo <francesco@sullo.co>",
   "license": "MIT",
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.3",

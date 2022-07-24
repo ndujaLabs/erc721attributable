@@ -74,11 +74,6 @@ pragma solidity ^0.8.4;
 /* is IERC165 */
 interface IAttributable {
   /**
-      @notice The comments above refer to an NFT, but the same approach can be used
-              with other classes of assets.
-   */
-
-  /**
      @dev Emitted when the attributes for an id and a player is set.
           The function must be called by the owner of the asset to authorize a player to set
           attributes on it. The rules for that are left to the asset.
@@ -272,10 +267,32 @@ Notice that the NFT does not encode anything, it is the player who knows what th
   }
 ```
 
-# Copyright
+## Install and usage
+
+To install it, launch 
+``` 
+npm i -d attributable
+```
+
+You may need to install the peer dependencies too, i.e., the OpenZeppelin contracts.
+
+To use it, in your smart contract import it as
+```solidity
+
+import "attributable/IAttributable.sol";
+import "attributable/IPlayer.sol";
+```
+
+Feel free to make a PR to add your contract in the next section:
+
+## Implementations
+
+None, right now. Some coming soon.
+
+## Copyright
 
 (c) 2022, Francesco Sullo <francesco@sullo.co>
 
-# License
+## License
 
 MIT
