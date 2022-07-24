@@ -6,7 +6,7 @@ A proposal for a standard approach to attributes on chain
 
 ## Premise
 
-In 2021, I proposed a standard for on-chain attributes for NFT at https://github.com/ndujaLabs/erc721playable
+In 2021, I proposed a standard for on-chain attributes for NFT at https://github.com/ndujaLabs/erc721playable  
 
 It was using an array of uint8 to store generic attributes.
 
@@ -15,6 +15,10 @@ After a few iterations and attempt to implement it I realized that it is very un
 Investigating the possible alternatives, I reach the conclusion that the best way to have generic values is to encode them in an array of uint256, asking the player to translate them in parameters that can be understood, for example, by a marketplace.
 
 Let's say that you have an NFT that start in a game at level 2, but later can be leveled up. Where do you store the info about the level? If you put it in the JSON metadata, you break one of the rules of the NFT, the immutability of the attributes (very important for collectors). The solution is to split the attributes in two categories: mutable and immutable attributes.
+
+There are a few proposal to extend the metadata provided by JSON files, like https://eips.ethereum.org/EIPS/eip-4906
+
+The problem is that smart contracts can't read dynamic parameters off-chain, which is the problem I am trying to solve here. 
 
 ## The interfaces
 
@@ -138,8 +142,100 @@ interface IPlayer {
 
 ## Examples
 
-Look at the two example in `/contracts/examples`
+In `/contracts/examples` there is an example of a token and a player.
 
+Let's show here just the function attributesOf in the player:
+
+```solidity
+function attributesOf(address _nft, uint256 tokenId) external override view returns (string memory) {
+    uint256 _attributes = IAttributable(_nft).attributesOf(tokenId, address(this), 0);
+    if (_attributes != 0) {
+      return
+        string(
+          abi.encodePacked(
+            "uint8 version:",
+            Strings.toString(uint8(_attributes)),
+            ";uint8 level:",
+            Strings.toString(uint16(_attributes >> 8)),
+            ";uint32 stamina:",
+            Strings.toString(uint32(_attributes >> 16)),
+            ";address winner:",
+            Strings.toHexString(uint160(_attributes >> 48), 20)
+          )
+        );
+    } else {
+      return "";
+    }
+  }
+```
+Calling it, a marketplace can get something like:
+```
+uint8 version:1;uint8 level:2;uint32 stamina:2436233;address winner:0x426eb88af949cd5bd8a272031badc2f80240e766
+```
+that can be easily transformed in a JSON like:
+```JSON
+{
+  "version": {
+    "type": "uint8",
+    "value": 1    
+  },
+  "level": {
+    "type": "uint8",
+    "value": 2
+  },
+  "stamina": {
+    "type": "uint32",
+    "value": 2436233
+  },
+  "winner": {
+    "type": "address",
+    "value": "0x426eb88af949cd5bd8a272031badc2f80240e766"
+  }
+}
+```
+of something like:
+```JSON
+{
+  "attributes": [
+    {
+      "trait_type": "version",
+      "value": 1
+    },
+    {
+      "trait_type": "level",
+      "value": 2
+    },
+    {
+      "trait_type": "stamina",
+      "value": 2436233
+    },
+    {
+      "trait_type": "winner",
+      "value": "0x426eb88af949cd5bd8a272031badc2f80240e766"
+    }
+  ]
+}
+```
+
+Notice that the NFT does not encode anything, it is the player who knows what the data means, that encodes it. Look at the following function in MyPlayer.sol:
+```solidity
+  function updateAttributesOf(
+    address _nft,
+    uint256 tokenId,
+    TokenData memory data
+  ) external {
+
+    require(_operator != address(0) && _operator == _msgSender(), 
+            "Not the operator");
+
+    uint256 attributes = uint256(data.version) | 
+                         (uint256(data.level) << 8) | 
+                         (uint256(data.stamina) << 16) | 
+                         (uint256(uint160(data.winner)) << 48);
+
+    IAttributable(_nft).updateAttributes(tokenId, 0, attributes);
+  }
+```
 
 # Copyright
 
