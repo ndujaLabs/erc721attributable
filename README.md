@@ -283,11 +283,11 @@ import "attributable/contracts/IAttributable.sol";
 import "attributable/contracts/IPlayer.sol";
 ```
 
-Feel free to make a PR to add your contract in the next section:
-
 ## Implementations
 
-None, right now. Some coming soon.
+1. **Everdragons2GenesisV3** https://github.com/ndujaLabs/everdragons2-core/blob/main/contracts/V2-V3/Everdragons2GenesisV3.sol
+
+Feel free to make a PR to add your contracts.
 
 ## Copyright
 
