@@ -20,6 +20,20 @@ There are a few proposal to extend the metadata provided by JSON files, like htt
 
 The problem is that smart contracts can't read dynamic parameters off-chain, which is the problem I am trying to solve here. 
 
+## The data
+
+The idea is to have in the NFT a flexible format for the data, so that even if the contract is upgraded requiring a different set of information, it is still possible to upgrade the contract keeping a compatible storage. Look at this map:
+
+```solidity
+  mapping(uint256 => mapping(address => mapping(uint8 => uint256))) internal _tokenAttributes;
+```
+
+It is supposed to be used as
+```solidity
+_tokenAttributes[tokenId][playerAddress][index]
+```
+In most cases, a single index, 0, will be enough. But having the possibility of extending to a max of 256 values, cover almost every possible need.
+
 ## The interfaces
 
 ### IAttributable - the NFT should extend it
