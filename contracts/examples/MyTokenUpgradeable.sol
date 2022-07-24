@@ -8,16 +8,20 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
 import "../IAttributable.sol";
 
-contract MyToken is IAttributable, Initializable, ERC721Upgradeable, OwnableUpgradeable, UUPSUpgradeable {
+contract MyTokenUpgradeable is IAttributable, Initializable, ERC721Upgradeable, OwnableUpgradeable, UUPSUpgradeable {
   /// @custom:oz-upgrades-unsafe-allow constructor
   constructor() {
     _disableInitializers();
   }
 
+  uint256 internal _nextTokenId;
+  mapping(uint256 => mapping(address => mapping(uint8 => uint256))) internal _tokenAttributes;
+
   function initialize() initializer public {
     __ERC721_init("MyToken", "MTK");
     __Ownable_init();
     __UUPSUpgradeable_init();
+    _nextTokenId = 1;
   }
 
   function _authorizeUpgrade(address newImplementation)
@@ -25,8 +29,6 @@ contract MyToken is IAttributable, Initializable, ERC721Upgradeable, OwnableUpgr
   onlyOwner
   override
   {}
-
-  mapping(uint256 => mapping(address => mapping(uint8 => uint256))) internal _tokenAttributes;
 
   function attributesOf(
     uint256 _id,
@@ -51,5 +53,9 @@ contract MyToken is IAttributable, Initializable, ERC721Upgradeable, OwnableUpgr
     // notice that if the playes set the attributes to zero, it de-authorize itself
     // and not more changes will be allowed until the NFT owner authorize it again
     _tokenAttributes[_id][_msgSender()][_index] = _attributes;
+  }
+
+  function mint(address to) external onlyOwner {
+    _safeMint(to, _nextTokenId++);
   }
 }

@@ -184,7 +184,7 @@ function attributesOf(address _nft, uint256 tokenId) external override view retu
 ```
 Calling it, a marketplace can get something like:
 ```
-uint8 version:1;uint8 level:2;uint32 stamina:2436233;address winner:0x426eb88af949cd5bd8a272031badc2f80240e766
+uint8 version:1;uint8 level:2;uint32 stamina:2436233;address winner:0x426eb88af949cd5bd8a272031badc2f80330e766
 ```
 that can be easily transformed in a JSON like:
 ```JSON
@@ -203,7 +203,7 @@ that can be easily transformed in a JSON like:
   },
   "winner": {
     "type": "address",
-    "value": "0x426eb88af949cd5bd8a272031badc2f80240e766"
+    "value": "0x426eb88af949cd5bd8a272031badc2f80330e766"
   }
 }
 ```
@@ -225,7 +225,7 @@ of something like:
     },
     {
       "trait_type": "winner",
-      "value": "0x426eb88af949cd5bd8a272031badc2f80240e766"
+      "value": "0x426eb88af949cd5bd8a272031badc2f80330e766"
     }
   ]
 }

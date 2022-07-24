@@ -8,6 +8,7 @@ import "../IAttributable.sol";
 contract MyToken is ERC721, Ownable, IAttributable {
   constructor() ERC721("MyToken", "MTK") {}
 
+  uint256 internal _nextTokenId = 1;
   mapping(uint256 => mapping(address => mapping(uint8 => uint256))) internal _tokenAttributes;
 
   function attributesOf(
@@ -33,5 +34,9 @@ contract MyToken is ERC721, Ownable, IAttributable {
     // notice that if the playes set the attributes to zero, it de-authorize itself
     // and not more changes will be allowed until the NFT owner authorize it again
     _tokenAttributes[_id][_msgSender()][_index] = _attributes;
+  }
+
+  function mint(address to) external onlyOwner {
+    _safeMint(to, _nextTokenId++);
   }
 }
