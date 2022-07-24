@@ -70,7 +70,7 @@ interface IAttributable {
 
        The owner of the NFT must not be able to update the attributes.
 
-       It must revert if the asset is not initialized for that player, i.e., if
+       It must revert if the asset is not initialized for that player (the msg.sender), i.e., if
        the value returned by attributesOf is 0.
 
      @param _id The id of the token for whom to change the attributes
