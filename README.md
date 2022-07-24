@@ -1,6 +1,8 @@
 # Attributable
-
 A proposal for a standard approach to attributes on chain
+
+### THIS IS A WORK IN PROGRESS
+
 
 ## Premise
 
@@ -14,89 +16,135 @@ Investigating the possible alternatives, I reach the conclusion that the best wa
 
 Let's say that you have an NFT that start in a game at level 2, but later can be leveled up. Where do you store the info about the level? If you put it in the JSON metadata, you break one of the rules of the NFT, the immutability of the attributes (very important for collectors). The solution is to split the attributes in two categories: mutable and immutable attributes.
 
+## The interfaces
 
-## Set up you environment
+### IAttributable - the NFT should extend it
 
-### 1 - Node
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
 
-Install [node](https://nodejs.org/). Best way on Linux and Mac is to use [nvm](https://github.com/nvm-sh/nvm).
+// Author:
+// Francesco Sullo <francesco@sullo.co>
 
-```
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-```
+/**
+   @title IAttributable Cross-player On-chain Attributes
+    Version: 0.0.1
+   ERC165 interfaceId is
+   */
+/* is IERC165 */
+interface IAttributable {
 
-The script clones the nvm repository to `~/.nvm`, and attempts to add the source lines from the snippet below to the correct profile file (`~/.bash_profile`, `~/.zshrc`, `~/.profile`, or `~/.bashrc`).
+  /**
+      @notice The comments above refer to an NFT, but the same approach can be used
+              with other classes of assets.
+   */
 
-```
+  /**
+     @dev Emitted when the attributes for an id and a player is set.
+          The function must be called by the owner of the asset to authorize a player to set
+          attributes on it. The rules for that are left to the asset.
+   */
+  event AttributesInitialized(uint256 indexed _id, address indexed _player);
 
-export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
-```
+  /**
+     @dev It returns the on-chain attributes of a specific id
+       This function is called by the player, which is able to decode the uint and
+       transform them in whatever is necessary for the game.
+     @param _id The id of the token for whom to query the on-chain attributes
+     @param _player The address of the player's contract
+     @param _index The index in the array of attributes
+     @return The encoded attributes of the token
+   */
+  function attributesOf(
+    uint256 _id,
+    address _player,
+    uint256 _index
+  ) external view returns (uint256);
 
-Opening a new terminal, you should be able to access nvm. If not, add the lines above in your profile file, and source it.
+  /**
+     @notice Initialize the attributes of a token
+     @dev It must be called by the nft's owner to approve the player.
+       To avoid that nft owners give themselves arbitrary values, they must not
+       be able to set up the values, but only to create the array that later
+       will be filled by the player.
+       The function should emit the AttributesInitiated event
+     @param _id The id of the token for whom to change the attributes
+     @param _player The version of the attributes
+   */
+  function authorizePlayer(uint256 _id, address _player) external returns (bool);
 
-When nvm is installed, you can install node with a command like
-
-```
-nvm install v16
-```
-
-The advantage of using nvm is that it does not install it as root (very important for security) and allows you to install many versions of Node and jump between them when you need it.
-
-### 2 - Pnpm and dependencies
-
-Install the packages. In this repo we use [pnpm](https://pnpm.io/) as favorite package manager, because it is faster than npm, saves lot of spaces reusing packages, manages monorepos, etc.
-
-```
-npm i -g pnpm
-```
-
-Install the dependencies
-
-```
-pnpm i
-```
-
-### 3 - Dev blockchain
-
-You can launch an EVM node with
-
-```
-npx hardhat node
-```
-
-the problem is that every time you restart it, you reset your environment. This is not optimal. It'd be better to be able to have a local blockchain that maintains contracts, transactions, etc. so that you can evolve your work.
-To do so, we prefer to use Ganache.
-
-Go to https://trufflesuite.com/ganache/, download Ganache and install it.
-
-Launch it. Then, configure a server compatible with Hardhat node. To do so, in Workspaces, click on NEW WORKSPACE (Ethereum). In the tab Server, set the port number to 8545 and the network ID to 1337. In the tab Account&Keys, use the standard Hardhat test mnemonic:
-
-```
-test test test test test test test test test test test junk
-```
-
-When done, run the server. Now, you have a local blockchain ready for the job.
-
-### 4 - Tasks
-
-To compile the smart contracts
-
-```
-npx hardhat compile
-```
-
-To test:
-
-```
-npx hardhat test
-```
-
-To deploy the nft to Ganache
+  /**
+     @notice Sets the attributes of a token after the initialization
+     @dev It modifies attributes by id for a specific player. It must
+       be called by the player's contract, after an NFT has been initialized.
+       The owner of the NFT must not be able to modify the attributes. If not,
+       the owner can cheat on its values.
+       It must revert if the asset is not initialized for that player
+       It could emit an event to state the update, but that is not mandatory
+       since it consumes gas and there can be many changes in the asset. 
+     @param _id The id of the token for whom to change the attributes
+     @param _index The index of the array where the attribute is updated
+     @param _attributes The encoded attributes
+   */
+  function updateAttributes(
+    uint256 _id,
+    uint256 _index,
+    uint256 _attributes
+  ) external returns (bool);
+}
 
 ```
-bin/deploy.sh nft localhost
+
+### IPlayer - the player should extend it
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+// Author:
+// Francesco Sullo <francesco@sullo.co>
+
+/**
+   @title IPlayer Player of an attributable asset
+    Version: 0.0.1
+   ERC165 interfaceId is
+   */
+/* is IERC165 */
+interface IPlayer {
+  /**
+    @dev returns the attributes in a readable way
+    @param _asset The address of the asset played by the game
+    @param _id The id of the asset
+    @return A string with type of the attribute, name and value
+
+  EXAMPLE:
+
+  function attributesOf(address _asset, uint256 tokenId) external view tokenExists(tokenId) returns (string memory) {
+    return
+      string(
+        abi.encodePacked(
+          "uint8 level:",
+          StringsUpgradeable.toString(uint8(_attributes[_asset][_id])),
+          ";uint8 state:",
+          StringsUpgradeable.toString(uint16(_attributes[_asset][_id] >> 8)),
+          ";uint32 stamina:",
+          StringsUpgradeable.toString(uint32(_attributes[_asset][_id] >> 16))
+        )
+      );
+  }
+  */
+  function attributesOf(
+    address _asset,
+    uint256 _id
+  ) external view returns (string memory);
+}
+
 ```
+
+## Examples
+
+Look at the two example in `/contracts/examples`
+
 
 # Copyright
 
