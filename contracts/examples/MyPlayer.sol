@@ -10,6 +10,12 @@ import "../IPlayer.sol";
 contract MyPlayer is IPlayer, Ownable {
   address internal _operator;
 
+  struct TokenData {
+    uint8 version;
+    uint8 level;
+    uint32 stamina;
+  }
+
   function setOperator(address operator) external onlyOwner {
     _operator = operator;
   }
@@ -17,9 +23,10 @@ contract MyPlayer is IPlayer, Ownable {
   function updateAttributesOf(
     address _nft,
     uint256 tokenId,
-    uint256 attributes
+    TokenData memory data
   ) external {
     require(_operator != address(0) && _operator == _msgSender(), "Not the operator");
+    uint256 attributes = 1 | (uint256(data.level) << 8) | (uint256(data.stamina) << 16);
     IAttributable(_nft).updateAttributes(tokenId, 0, attributes);
   }
 
