@@ -30,6 +30,15 @@ contract MyTokenUpgradeable is IAttributable, Initializable, ERC721Upgradeable, 
   override
   {}
 
+  function supportsInterface(bytes4 interfaceId)
+  public
+  view
+  override(ERC721Upgradeable)
+  returns (bool)
+  {
+    return interfaceId == type(IAttributable).interfaceId || super.supportsInterface(interfaceId);
+  }
+
   function attributesOf(
     uint256 _id,
     address _player,

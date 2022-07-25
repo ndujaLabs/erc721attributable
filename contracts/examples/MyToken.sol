@@ -11,6 +11,15 @@ contract MyToken is ERC721, Ownable, IAttributable {
   uint256 internal _nextTokenId = 1;
   mapping(uint256 => mapping(address => mapping(uint8 => uint256))) internal _tokenAttributes;
 
+  function supportsInterface(bytes4 interfaceId)
+  public
+  view
+  override(ERC721)
+  returns (bool)
+  {
+    return interfaceId == type(IAttributable).interfaceId || super.supportsInterface(interfaceId);
+  }
+
   function attributesOf(
     uint256 _id,
     address _player,
