@@ -279,8 +279,8 @@ You may need to install the peer dependencies too, i.e., the OpenZeppelin contra
 To use it, in your smart contract import it as
 ```solidity
 
-import "attributable/contracts/IAttributable.sol";
-import "attributable/contracts/IPlayer.sol";
+import "@ndujalabs/attributable/contracts/IAttributable.sol";
+import "@ndujalabs/attributable/contracts/IPlayer.sol";
 ```
 
 ## Implementations

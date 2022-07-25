@@ -1,6 +1,6 @@
 {
-  "name": "attributable",
-  "version": "0.0.3",
+  "name": "@ndujalabs/attributable",
+  "version": "0.0.1",
   "description": "A proposal for on-chain attributes for NFT and other assets",
   "publishConfig": {
     "access": "public"
