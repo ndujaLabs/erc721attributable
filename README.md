@@ -1,8 +1,6 @@
 # Attributable
 A proposal for a standard approach to attributes on chain
 
-### THIS IS A WORK IN PROGRESS
-
 ## Premise
 
 In 2021, I proposed a standard for on-chain attributes for NFT at https://github.com/ndujaLabs/erc721playable  
