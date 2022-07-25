@@ -67,4 +67,5 @@ contract MyTokenUpgradeable is IAttributable, Initializable, ERC721Upgradeable, 
   function mint(address to) external onlyOwner {
     _safeMint(to, _nextTokenId++);
   }
+
 }

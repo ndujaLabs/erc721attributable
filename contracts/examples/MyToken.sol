@@ -48,4 +48,5 @@ contract MyToken is ERC721, Ownable, IAttributable {
   function mint(address to) external onlyOwner {
     _safeMint(to, _nextTokenId++);
   }
+
 }
