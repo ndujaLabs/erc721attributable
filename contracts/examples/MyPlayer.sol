@@ -18,20 +18,11 @@ contract MyPlayer is IAttributablePlayer, Ownable, ERC165 {
     address winner;
   }
 
-  function getInterfaceIds()
-  public
-  view
-  returns (bytes4, bytes4)
-  {
+  function getInterfaceIds() public view returns (bytes4, bytes4) {
     return (type(IAttributable).interfaceId, type(IAttributablePlayer).interfaceId);
   }
 
-  function supportsInterface(bytes4 interfaceId)
-  public
-  view
-  override
-  returns (bool)
-  {
+  function supportsInterface(bytes4 interfaceId) public view override returns (bool) {
     return interfaceId == type(IAttributablePlayer).interfaceId || super.supportsInterface(interfaceId);
   }
 
@@ -53,18 +44,18 @@ contract MyPlayer is IAttributablePlayer, Ownable, ERC165 {
     uint256 _attributes = IAttributable(_nft).attributesOf(tokenId, address(this), 0);
     if (_attributes != 0) {
       return
-      string(
-        abi.encodePacked(
-          "uint8 version:",
-          Strings.toString(uint8(_attributes)),
-          ";uint8 level:",
-          Strings.toString(uint16(_attributes >> 8)),
-          ";uint32 stamina:",
-          Strings.toString(uint32(_attributes >> 16)),
-          ";address winner:",
-          Strings.toHexString(uint160(_attributes >> 48), 20)
-        )
-      );
+        string(
+          abi.encodePacked(
+            "uint8 version:",
+            Strings.toString(uint8(_attributes)),
+            ";uint8 level:",
+            Strings.toString(uint16(_attributes >> 8)),
+            ";uint32 stamina:",
+            Strings.toString(uint32(_attributes >> 16)),
+            ";address winner:",
+            Strings.toHexString(uint160(_attributes >> 48), 20)
+          )
+        );
     } else {
       return "";
     }

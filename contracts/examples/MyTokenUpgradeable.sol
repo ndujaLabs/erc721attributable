@@ -17,25 +17,16 @@ contract MyTokenUpgradeable is IAttributable, Initializable, ERC721Upgradeable, 
   uint256 internal _nextTokenId;
   mapping(uint256 => mapping(address => mapping(uint8 => uint256))) internal _tokenAttributes;
 
-  function initialize() initializer public {
+  function initialize() public initializer {
     __ERC721_init("MyToken", "MTK");
     __Ownable_init();
     __UUPSUpgradeable_init();
     _nextTokenId = 1;
   }
 
-  function _authorizeUpgrade(address newImplementation)
-  internal
-  onlyOwner
-  override
-  {}
+  function _authorizeUpgrade(address newImplementation) internal override onlyOwner {}
 
-  function supportsInterface(bytes4 interfaceId)
-  public
-  view
-  override(ERC721Upgradeable)
-  returns (bool)
-  {
+  function supportsInterface(bytes4 interfaceId) public view override(ERC721Upgradeable) returns (bool) {
     return interfaceId == type(IAttributable).interfaceId || super.supportsInterface(interfaceId);
   }
 
@@ -67,5 +58,4 @@ contract MyTokenUpgradeable is IAttributable, Initializable, ERC721Upgradeable, 
   function mint(address to) external onlyOwner {
     _safeMint(to, _nextTokenId++);
   }
-
 }

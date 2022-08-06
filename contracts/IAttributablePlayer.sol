@@ -9,7 +9,6 @@ pragma solidity ^0.8.4;
     Version: 0.0.2
    ERC165 interfaceId is 0x72261e7d
    */
-/* is IERC165 */
 interface IAttributablePlayer {
   /**
     @dev returns the attributes in a readable way
