@@ -3,11 +3,12 @@ pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
+import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
 
 import "../IAttributable.sol";
 import "../IAttributablePlayer.sol";
 
-contract MyPlayer is IAttributablePlayer, Ownable {
+contract MyPlayer is IAttributablePlayer, Ownable, ERC165 {
   address internal _operator;
 
   struct TokenData {
@@ -15,6 +16,23 @@ contract MyPlayer is IAttributablePlayer, Ownable {
     uint8 level;
     uint32 stamina;
     address winner;
+  }
+
+  function getInterfaceIds()
+  public
+  view
+  returns (bytes4, bytes4)
+  {
+    return (type(IAttributable).interfaceId, type(IAttributablePlayer).interfaceId);
+  }
+
+  function supportsInterface(bytes4 interfaceId)
+  public
+  view
+  override
+  returns (bool)
+  {
+    return interfaceId == type(IAttributablePlayer).interfaceId || super.supportsInterface(interfaceId);
   }
 
   function setOperator(address operator) external onlyOwner {

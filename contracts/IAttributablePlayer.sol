@@ -6,8 +6,8 @@ pragma solidity ^0.8.4;
 
 /**
    @title IAttributablePlayer Player of an attributable asset
-    Version: 0.0.1
-   ERC165 interfaceId is
+    Version: 0.0.2
+   ERC165 interfaceId is 0x72261e7d
    */
 /* is IERC165 */
 interface IAttributablePlayer {
