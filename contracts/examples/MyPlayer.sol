@@ -5,9 +5,9 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
 import "../IAttributable.sol";
-import "../IPlayer.sol";
+import "../IAttributablePlayer.sol";
 
-contract MyPlayer is IPlayer, Ownable {
+contract MyPlayer is IAttributablePlayer, Ownable {
   address internal _operator;
 
   struct TokenData {

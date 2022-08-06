@@ -140,7 +140,7 @@ interface IAttributable {
 
 ```
 
-### IPlayer - the player should extend it
+### IAttributablePlayer - the player should extend it
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
@@ -149,12 +149,12 @@ pragma solidity ^0.8.4;
 // Francesco Sullo <francesco@sullo.co>
 
 /**
-   @title IPlayer Player of an attributable asset
+   @title IAttributablePlayer Player of an attributable asset
     Version: 0.0.1
    ERC165 interfaceId is
    */
 /* is IERC165 */
-interface IPlayer {
+interface IAttributablePlayer {
   /**
     @dev returns the attributes in a readable way
     @param _asset The address of the asset played by the game
@@ -277,7 +277,7 @@ To use it, in your smart contract import it as
 ```solidity
 
 import "@ndujalabs/attributable/contracts/IAttributable.sol";
-import "@ndujalabs/attributable/contracts/IPlayer.sol";
+import "@ndujalabs/attributable/contracts/IAttributablePlayer.sol";
 ```
 
 ## Implementations
@@ -285,6 +285,11 @@ import "@ndujalabs/attributable/contracts/IPlayer.sol";
 1. **Everdragons2GenesisV3** https://github.com/ndujaLabs/everdragons2-core/blob/main/contracts/V2-V3/Everdragons2GenesisV3.sol
 
 Feel free to make a PR to add your contracts.
+
+## History
+
+**0.0.2**
+- Renamed IPlayer to IAttributablePlayer to avoid a too generic name.
 
 ## Copyright
 
