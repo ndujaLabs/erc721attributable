@@ -41,6 +41,7 @@ contract MyTokenUpgradeable is IAttributable, Initializable, ERC721Upgradeable, 
   function authorizePlayer(uint256 _id, address _player) external override {
     require(ownerOf(_id) == _msgSender(), "Not the owner");
     require(_tokenAttributes[_id][_player][0] == 0, "Player already authorized");
+    // this MUST be initialized to 1
     _tokenAttributes[_id][_player][0] = 1;
     emit AttributesInitializedFor(_id, _player);
   }
@@ -51,7 +52,7 @@ contract MyTokenUpgradeable is IAttributable, Initializable, ERC721Upgradeable, 
     uint256 _attributes
   ) external override {
     require(_tokenAttributes[_id][_msgSender()][0] != 0, "Player not authorized");
-    // notice that if the playes set the attributes to zero, it de-authorize itself
+    // notice that if the player set the attributes to zero, it de-authorizes itself
     // and not more changes will be allowed until the NFT owner authorize it again
     _tokenAttributes[_id][_msgSender()][_index] = _attributes;
   }
