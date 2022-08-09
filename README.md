@@ -54,6 +54,7 @@ Another advantage of this approach is that it allows upgrading a contract keepin
 
 ```solidity
 // SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
 // Author:
@@ -70,7 +71,7 @@ interface IAttributable {
           The function must be called by the owner of the asset to authorize a player to set
           attributes on it. The rules for that are left to the asset.
 
-          This even is important because allows a marketplace to know that there are
+          This event is important because allows a marketplace to know that there are
           dynamic attributes set on the NFT by a specific contract (the player) so that
           the marketplace can query the player to get the attributes of the NFT in within
           the game.
@@ -100,15 +101,14 @@ interface IAttributable {
        be able to set up the values, but only to create the array that later
        will be filled by the player.
 
-       Since by default the value in the array would
-       be zero, the initial value must be a uint8 representing the version of the data,
-       starting with the value 1. This way the player can see if the data are initialized
-       checking that the attributesOf a certain id is 1.
+       Since by default the value in the array would be zero, the initial value 
+       must be a non-zero value. This way the player can see if the data are initialized
+       checking that the attributesOf a certain id is != 0.
 
        The function must emit the AttributesInitializedFor event
 
-     @param _id The id of the token for whom to change the attributes
-     @param _player The version of the attributes
+     @param _id The id of the token for whom to authorize the player
+     @param _player The address of the player contract
    */
   function authorizePlayer(uint256 _id, address _player) external;
 
@@ -119,8 +119,7 @@ interface IAttributable {
 
        The owner of the NFT must not be able to update the attributes.
 
-       It must revert if the asset is not initialized for that player (the msg.sender), i.e., if
-       the value returned by attributesOf is 0.
+       It must revert if the asset is not initialized for that player (the msg.sender).
 
      @param _id The id of the token for whom to change the attributes
      @param _index The index of the array where the attribute is updated
