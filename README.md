@@ -46,8 +46,6 @@ This way, you can have a maximum of 256 values which should cover the 99.9% of t
 
 Regardless, the optimal data format is not central, and the choice of what to use is left to the implementation of the NFT. What is more important here is to define how the NFT (or any other asset with an ID) interfaces with the player.
 
-Another advantage of this approach is that it allows upgrading a contract keeping the storage compatible with previous versions.
-
 ## The interfaces
 
 ### IAttributable - the NFT should extend it
