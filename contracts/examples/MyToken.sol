@@ -27,6 +27,8 @@ contract MyToken is ERC721, Ownable, IAttributable {
   function authorizePlayer(uint256 _id, address _player) external override {
     require(ownerOf(_id) == _msgSender(), "Not the owner");
     require(_tokenAttributes[_id][_player][0] == 0, "Player already authorized");
+    // this must be initialized to a non zero value.
+    // In this case, 1 could be the version of the data
     _tokenAttributes[_id][_player][0] = 1;
     emit AttributesInitializedFor(_id, _player);
   }
@@ -40,7 +42,8 @@ contract MyToken is ERC721, Ownable, IAttributable {
     // notice that, using the non zero value as a proof of authorization
     // if the player set the attributes to zero, it de-authorize itself
     // and not more changes will be allowed until the NFT owner authorize it again.
-    // Alternatively, the token could use a boolean to track the authorized players.
+    // Alternatively, the it could use a separate boolean to track the authorized players
+    // but that would take extra gas without a clear advantage.
     _tokenAttributes[_id][_msgSender()][_index] = _attributes;
   }
 

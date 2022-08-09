@@ -36,7 +36,7 @@ When you have big integers that encode information, you just need a map based on
 ```solidity
 mapping(uint256 => mapping(address => uint256)) internal _tokenAttributes;
 ```
-The problem is that sometimes, a single integer is not enough. So, a better solution is to have an "array" of big integers. My preferred map would be
+The problem is that a single integer may not be enough. A better solution is to have an "array" of big integers. My preferred variable would be
 
 ```solidity
 mapping(uint256 => mapping(address => mapping(uint8 => uint256))) internal _tokenAttributes;
@@ -44,14 +44,9 @@ mapping(uint256 => mapping(address => mapping(uint8 => uint256))) internal _toke
 
 This way, you can have a maximum of 256 values which should cover the 99.9% of the use cases.
 
-Regardless, the optimal data format is not central. What is more important here is to define how the NFT (or any other asset with an ID) interfaces with the game.
+Regardless, the optimal data format is not central, and the choice of what to use is left to the implementation of the NFT. What is more important here is to define how the NFT (or any other asset with an ID) interfaces with the player.
 
-Another advantage of this approach is that it allows upgrading a contract keeping the storage compatible with previous versions. Look at this map:
-
-The map above is supposed to be used as
-```solidity
-_tokenAttributes[tokenId][playerAddress][index]
-```
+Another advantage of this approach is that it allows upgrading a contract keeping the storage compatible with previous versions.
 
 ## The interfaces
 
@@ -243,7 +238,7 @@ of something like:
 }
 ```
 
-Notice that the NFT does not encode anything, it is the player who knows what the data means, that encodes it. Look at the following function in MyPlayer.sol:
+Notice that the NFT does not encode anything, it is the player who knows what the data means, and encodes the data. Look at the following function in MyPlayer.sol:
 ```solidity
   function updateAttributesOf(
     address _nft,
@@ -267,7 +262,7 @@ Notice that the NFT does not encode anything, it is the player who knows what th
 
 To install it, launch 
 ``` 
-npm i -d attributable
+npm i -d @ndujalabs/attributable
 ```
 
 You may need to install the peer dependencies too, i.e., the OpenZeppelin contracts.
