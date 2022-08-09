@@ -37,8 +37,10 @@ contract MyToken is ERC721, Ownable, IAttributable {
     uint256 _attributes
   ) external override {
     require(_tokenAttributes[_id][_msgSender()][0] != 0, "Player not authorized");
-    // notice that if the playes set the attributes to zero, it de-authorize itself
-    // and not more changes will be allowed until the NFT owner authorize it again
+    // notice that, using the non zero value as a proof of authorization
+    // if the player set the attributes to zero, it de-authorize itself
+    // and not more changes will be allowed until the NFT owner authorize it again.
+    // Alternatively, the token could use a boolean to track the authorized players.
     _tokenAttributes[_id][_msgSender()][_index] = _attributes;
   }
 
