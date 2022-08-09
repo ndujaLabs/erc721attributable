@@ -1,5 +1,5 @@
 # Attributable
-A proposal for a standard approach to attributes on chain
+A proposal for a standard approach to manage attributes on chain for NFTs
 
 ## Premise
 
