@@ -26,7 +26,9 @@ describe("Attributable", function () {
 
   it("should verify the flow", async function () {
 
-    expect(await myToken.supportsInterface("0x8de3c46d")).equal(true)
+    // console.log(await myPlayer.getInterfaceIds())
+
+    expect(await myToken.supportsInterface("0xc79cd306")).equal(true)
     expect(await myPlayer.supportsInterface("0x72261e7d")).equal(true)
 
     await myToken.connect(owner).mint(holder.address);
@@ -48,7 +50,7 @@ describe("Attributable", function () {
         tokenData
     )).revertedWith("Player not authorized")
 
-    expect(await myToken.connect(holder).authorizePlayer(tokenId, myPlayer.address))
+    expect(await myToken.connect(holder).initializeAttributesFor(tokenId, myPlayer.address))
         .to.emit(myToken, 'AttributesInitializedFor')
         .withArgs(tokenId, myPlayer.address);
 
