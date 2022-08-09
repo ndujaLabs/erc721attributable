@@ -1,6 +1,8 @@
 # Attributable
 A proposal for a standard approach to manage attributes on chain for NFTs
 
+### ALERT This is a work in progress and breaking changes can be introduced at any time.
+
 ## Premise
 
 In 2021, I proposed a standard for on-chain attributes for NFT at https://github.com/ndujaLabs/erc721playable  
@@ -275,6 +277,11 @@ import "@ndujalabs/attributable/contracts/IAttributablePlayer.sol";
 Feel free to make a PR to add your contracts.
 
 ## History
+
+**0.0.3**
+- Moved from uint8 to uint256 in functions
+- Rename `authorizePlayer` to `initializePlayerFor` in `IAttributable`
+- Interface ID has changed, breaking the compatibility with previous implementations
 
 **0.0.2**
 - Renamed IPlayer to IAttributablePlayer to avoid a too generic name.
