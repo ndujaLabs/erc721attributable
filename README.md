@@ -110,7 +110,7 @@ interface IAttributable {
        starting with the value 1. This way the player can see if the data are initialized
        checking that the attributesOf a certain id is 1.
 
-       The function must emit the AttributesInitiated event
+       The function must emit the AttributesInitializedFor event
 
      @param _id The id of the token for whom to change the attributes
      @param _player The version of the attributes
