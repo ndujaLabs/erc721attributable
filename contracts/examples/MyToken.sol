@@ -28,6 +28,7 @@ contract MyToken is ERC721, Ownable, IAttributable {
     require(ownerOf(_id) == _msgSender(), "Not the owner");
     require(_tokenAttributes[_id][_player][0] == 0, "Player already authorized");
     _tokenAttributes[_id][_player][0] = 1;
+    emit AttributesInitializedFor(_id, _player);
   }
 
   function updateAttributes(
