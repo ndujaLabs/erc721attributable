@@ -7,7 +7,7 @@ pragma solidity ^0.8.4;
 /**
    @title IAttributable Cross-player On-chain Attributes
     Version: 0.0.1
-   ERC165 interfaceId is 0x8de3c46d
+   ERC165 interfaceId is 0xc79cd306
    */
 interface IAttributable {
   /**
@@ -34,12 +34,12 @@ interface IAttributable {
   function attributesOf(
     uint256 _id,
     address _player,
-    uint8 _index
+    uint256 _index
   ) external view returns (uint256);
 
   /**
-     @notice Authorize a player initializing the attributes of a token to 1
-     @dev It must be called by the nft's owner to approve the player.
+     @notice Authorize a player initializing the attributes of a token to a non zero value
+     @dev It must be called by the owner of the nft
 
        To avoid that nft owners give themselves arbitrary values, they must not
        be able to set up the values, but only to create the array that later
@@ -54,7 +54,7 @@ interface IAttributable {
      @param _id The id of the token for whom to authorize the player
      @param _player The address of the player contract
    */
-  function authorizePlayer(uint256 _id, address _player) external;
+  function initializeAttributesFor(uint256 _id, address _player) external;
 
   /**
      @notice Sets the attributes of a token after the initialization
@@ -71,7 +71,7 @@ interface IAttributable {
    */
   function updateAttributes(
     uint256 _id,
-    uint8 _index,
+    uint256 _index,
     uint256 _attributes
   ) external;
 }

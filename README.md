@@ -1,6 +1,8 @@
 # Attributable
 A proposal for a standard approach to manage attributes on chain for NFTs
 
+### ALERT This is a work in progress and breaking changes can be introduced at any time.
+
 ## Premise
 
 In 2021, I proposed a standard for on-chain attributes for NFT at https://github.com/ndujaLabs/erc721playable  
@@ -39,10 +41,8 @@ mapping(uint256 => mapping(address => uint256)) internal _tokenAttributes;
 The problem is that a single integer may not be enough. A better solution is to have an "array" of big integers. My preferred variable would be
 
 ```solidity
-mapping(uint256 => mapping(address => mapping(uint8 => uint256))) internal _tokenAttributes;
+mapping(uint256 => mapping(address => mapping(uint256 => uint256))) internal _tokenAttributes;
 ```
-
-This way, you can have a maximum of 256 values which should cover the 99.9% of the use cases.
 
 Regardless, the optimal data format is not central, and the choice of what to use is left to the implementation of the NFT. What is more important here is to define how the NFT (or any other asset with an ID) interfaces with the player.
 
@@ -60,7 +60,7 @@ pragma solidity ^0.8.4;
 /**
    @title IAttributable Cross-player On-chain Attributes
     Version: 0.0.1
-   ERC165 interfaceId is 0x8de3c46d
+   ERC165 interfaceId is 0xc79cd306
    */
 interface IAttributable {
   /**
@@ -87,7 +87,7 @@ interface IAttributable {
   function attributesOf(
     uint256 _id,
     address _player,
-    uint8 _index
+    uint256 _index
   ) external view returns (uint256);
 
   /**
@@ -107,7 +107,7 @@ interface IAttributable {
      @param _id The id of the token for whom to authorize the player
      @param _player The address of the player contract
    */
-  function authorizePlayer(uint256 _id, address _player) external;
+  function initializeAttributesFor(uint256 _id, address _player) external;
 
   /**
      @notice Sets the attributes of a token after the initialization
@@ -124,7 +124,7 @@ interface IAttributable {
    */
   function updateAttributes(
     uint256 _id,
-    uint8 _index,
+    uint256 _index,
     uint256 _attributes
   ) external;
 }
@@ -277,6 +277,11 @@ import "@ndujalabs/attributable/contracts/IAttributablePlayer.sol";
 Feel free to make a PR to add your contracts.
 
 ## History
+
+**0.0.3**
+- Moved from uint8 to uint256 in functions
+- Rename `authorizePlayer` to `initializePlayerFor` in `IAttributable`
+- Interface ID has changed, breaking the compatibility with previous implementations
 
 **0.0.2**
 - Renamed IPlayer to IAttributablePlayer to avoid a too generic name.

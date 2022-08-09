@@ -15,7 +15,7 @@ contract MyTokenUpgradeable is IAttributable, Initializable, ERC721Upgradeable, 
   }
 
   uint256 internal _nextTokenId;
-  mapping(uint256 => mapping(address => mapping(uint8 => uint256))) internal _tokenAttributes;
+  mapping(uint256 => mapping(address => mapping(uint256 => uint256))) internal _tokenAttributes;
 
   function initialize() public initializer {
     __ERC721_init("MyToken", "MTK");
@@ -33,12 +33,12 @@ contract MyTokenUpgradeable is IAttributable, Initializable, ERC721Upgradeable, 
   function attributesOf(
     uint256 _id,
     address _player,
-    uint8 _index
+    uint256 _index
   ) external view override returns (uint256) {
     return _tokenAttributes[_id][_player][_index];
   }
 
-  function authorizePlayer(uint256 _id, address _player) external override {
+  function initializeAttributesFor(uint256 _id, address _player) external override {
     require(ownerOf(_id) == _msgSender(), "Not the owner");
     require(_tokenAttributes[_id][_player][0] == 0, "Player already authorized");
     _tokenAttributes[_id][_player][0] = 1;
@@ -47,7 +47,7 @@ contract MyTokenUpgradeable is IAttributable, Initializable, ERC721Upgradeable, 
 
   function updateAttributes(
     uint256 _id,
-    uint8 _index,
+    uint256 _index,
     uint256 _attributes
   ) external override {
     require(_tokenAttributes[_id][_msgSender()][0] != 0, "Player not authorized");

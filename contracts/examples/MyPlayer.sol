@@ -18,6 +18,7 @@ contract MyPlayer is IAttributablePlayer, Ownable, ERC165 {
     address winner;
   }
 
+  // convenient function, for testing only
   function getInterfaceIds() public view returns (bytes4, bytes4) {
     return (type(IAttributable).interfaceId, type(IAttributablePlayer).interfaceId);
   }
@@ -60,4 +61,5 @@ contract MyPlayer is IAttributablePlayer, Ownable, ERC165 {
       return "";
     }
   }
+
 }
