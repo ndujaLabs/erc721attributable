@@ -52,7 +52,6 @@ Regardless, the optimal data format is not central, and the choice of what to us
 
 ```solidity
 // SPDX-License-Identifier: MIT
-// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
 // Author:
