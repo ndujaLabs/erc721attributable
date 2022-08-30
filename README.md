@@ -54,12 +54,9 @@ Regardless, the optimal data format is not central, and the choice of what to us
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-// Author:
-// Francesco Sullo <francesco@sullo.co>
-
 /**
    @title IAttributable Cross-player On-chain Attributes
-    Version: 0.0.1
+    Version: 0.0.4
    ERC165 interfaceId is 0xc79cd306
    */
 interface IAttributable {
@@ -74,6 +71,11 @@ interface IAttributable {
           the game.
    */
   event AttributesInitializedFor(uint256 indexed _id, address indexed _player);
+
+  /**
+   @dev Emitted when the attributes for an id are updated.
+   */
+  event AttributesUpdated(uint256 indexed _id);
 
   /**
      @dev It returns the on-chain attributes of a specific id
@@ -91,14 +93,14 @@ interface IAttributable {
   ) external view returns (uint256);
 
   /**
-     @notice Authorize a player initializing the attributes of a token to 1
-     @dev It must be called by the nft's owner to approve the player.
+     @notice Authorize a player initializing the attributes of a token to a non zero value
+     @dev It must be called by the owner of the nft
 
        To avoid that nft owners give themselves arbitrary values, they must not
        be able to set up the values, but only to create the array that later
        will be filled by the player.
 
-       Since by default the value in the array would be zero, the initial value 
+       Since by default the value in the array would be zero, the initial value
        must be a non-zero value. This way the player can see if the data are initialized
        checking that the attributesOf a certain id is != 0.
 
@@ -117,6 +119,8 @@ interface IAttributable {
        The owner of the NFT must not be able to update the attributes.
 
        It must revert if the asset is not initialized for that player (the msg.sender).
+       
+       The function must emit the AttributesUpdated event
 
      @param _id The id of the token for whom to change the attributes
      @param _index The index of the array where the attribute is updated
@@ -128,6 +132,7 @@ interface IAttributable {
     uint256 _attributes
   ) external;
 }
+
 
 ```
 
