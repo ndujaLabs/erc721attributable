@@ -278,6 +278,9 @@ Feel free to make a PR to add your contracts.
 
 ## History
 
+**0.0.4**
+- Add event AttributesUpdated
+
 **0.0.3**
 - Moved from uint8 to uint256 in functions
 - Rename `authorizePlayer` to `initializePlayerFor` in `IAttributable`
