@@ -56,11 +56,11 @@ describe("Attributable", function () {
         .to.emit(myToken, 'AttributesInitializedFor')
         .withArgs(tokenId, myPlayer.address);
 
-    await myPlayer.updateAttributesOf(
+    expect(await myPlayer.updateAttributesOf(
         myToken.address,
         tokenId,
         tokenData
-    )
+    )).emit(myToken, "AttributesUpdated").withArgs(tokenId)
 
     attributes = await myToken.attributesOf(tokenId, myPlayer.address, 0);
     expect(attributes).to.equal("106752917089902064595775439782685550631690247383499200986087937");
