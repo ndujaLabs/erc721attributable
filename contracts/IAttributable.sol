@@ -6,7 +6,7 @@ pragma solidity ^0.8.4;
 
 /**
    @title IAttributable Cross-player On-chain Attributes
-    Version: 0.0.1
+    Version: 0.0.4
    ERC165 interfaceId is 0xc79cd306
    */
 interface IAttributable {
