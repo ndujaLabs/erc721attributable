@@ -23,6 +23,11 @@ interface IAttributable {
   event AttributesInitializedFor(uint256 indexed _id, address indexed _player);
 
   /**
+   @dev Emitted when the attributes for an id are updated.
+   */
+  event AttributesUpdated(uint256 indexed _id);
+
+  /**
      @dev It returns the on-chain attributes of a specific id
        This function is called by the player, which is able to decode the uint and
        transform them in whatever is necessary for the game.
@@ -64,6 +69,8 @@ interface IAttributable {
        The owner of the NFT must not be able to update the attributes.
 
        It must revert if the asset is not initialized for that player (the msg.sender).
+
+       The function must emit the AttributesUpdated event
 
      @param _id The id of the token for whom to change the attributes
      @param _index The index of the array where the attribute is updated

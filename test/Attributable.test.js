@@ -31,6 +31,8 @@ describe("Attributable", function () {
     expect(await myToken.supportsInterface("0xc79cd306")).equal(true)
     expect(await myPlayer.supportsInterface("0x72261e7d")).equal(true)
 
+    expect(await myToken.supportsInterface("0xc7ccdd06")).equal(false)
+
     await myToken.connect(owner).mint(holder.address);
     expect(await myToken.ownerOf(tokenId)).to.equal(holder.address);
     let attributes = await myToken.attributesOf(tokenId, myPlayer.address, 0);

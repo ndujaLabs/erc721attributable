@@ -52,6 +52,7 @@ contract MyTokenUpgradeable is IAttributable, Initializable, ERC721Upgradeable, 
   ) external override {
     require(_tokenAttributes[_id][_msgSender()][0] != 0, "Player not authorized");
     _tokenAttributes[_id][_msgSender()][_index] = _attributes;
+    emit AttributesUpdated(_id);
   }
 
   function mint(address to) external onlyOwner {
