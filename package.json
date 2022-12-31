@@ -1,5 +1,5 @@
 {
-  "name": "@ndujalabs/attributable",
+  "name": "@ndujalabs/erc721attributable",
   "version": "0.0.4",
   "description": "A proposal for on-chain attributes for NFT and other assets",
   "publishConfig": {
