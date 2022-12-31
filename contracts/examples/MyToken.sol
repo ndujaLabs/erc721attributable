@@ -4,16 +4,16 @@ pragma solidity ^0.8.4;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-import "../IAttributable.sol";
+import "../IERC721Attributable.sol";
 
-contract MyToken is ERC721, Ownable, IAttributable {
+contract MyToken is ERC721, Ownable, IERC721Attributable {
   constructor() ERC721("MyToken", "MTK") {}
 
   uint256 internal _nextTokenId = 1;
   mapping(uint256 => mapping(address => mapping(uint256 => uint256))) internal _tokenAttributes;
 
   function supportsInterface(bytes4 interfaceId) public view override(ERC721) returns (bool) {
-    return interfaceId == type(IAttributable).interfaceId || super.supportsInterface(interfaceId);
+    return interfaceId == type(IERC721Attributable).interfaceId || super.supportsInterface(interfaceId);
   }
 
   function attributesOf(

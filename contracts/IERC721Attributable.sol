@@ -5,11 +5,11 @@ pragma solidity ^0.8.4;
 // Francesco Sullo <francesco@sullo.co>
 
 /**
-   @title IAttributable Cross-player On-chain Attributes
+   @title IERC721Attributable Cross-player On-chain Attributes
     Version: 0.0.4
    ERC165 interfaceId is 0xc79cd306
    */
-interface IAttributable {
+interface IERC721Attributable {
   /**
      @dev Emitted when the attributes for an id and a player is set.
           The function must be called by the owner of the asset to authorize a player to set

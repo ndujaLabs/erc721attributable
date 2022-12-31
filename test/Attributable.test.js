@@ -1,7 +1,7 @@
 const {expect, assert} = require("chai");
 const {deployContract, deployContractUpgradeable} = require("./helpers");
 
-describe("Attributable", function () {
+describe("ERC721Attributable", function () {
   let myPlayer;
   let myToken;
 

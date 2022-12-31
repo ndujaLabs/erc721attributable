@@ -6,9 +6,9 @@ import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
-import "../IAttributable.sol";
+import "../IERC721Attributable.sol";
 
-contract MyTokenUpgradeable is IAttributable, Initializable, ERC721Upgradeable, OwnableUpgradeable, UUPSUpgradeable {
+contract MyTokenUpgradeable is IERC721Attributable, Initializable, ERC721Upgradeable, OwnableUpgradeable, UUPSUpgradeable {
   /// @custom:oz-upgrades-unsafe-allow constructor
   constructor() {
     _disableInitializers();
@@ -27,7 +27,7 @@ contract MyTokenUpgradeable is IAttributable, Initializable, ERC721Upgradeable, 
   function _authorizeUpgrade(address newImplementation) internal override onlyOwner {}
 
   function supportsInterface(bytes4 interfaceId) public view override(ERC721Upgradeable) returns (bool) {
-    return interfaceId == type(IAttributable).interfaceId || super.supportsInterface(interfaceId);
+    return interfaceId == type(IERC721Attributable).interfaceId || super.supportsInterface(interfaceId);
   }
 
   function attributesOf(

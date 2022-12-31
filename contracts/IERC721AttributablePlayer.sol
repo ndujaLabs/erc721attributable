@@ -5,11 +5,11 @@ pragma solidity ^0.8.4;
 // Francesco Sullo <francesco@sullo.co>
 
 /**
-   @title IAttributablePlayer Player of an attributable asset
+   @title IERC721AttributablePlayer Player of an attributable asset
     Version: 0.0.2
    ERC165 interfaceId is 0x72261e7d
    */
-interface IAttributablePlayer {
+interface IERC721AttributablePlayer {
   /**
     @dev returns the attributes in a readable way
     @param _asset The address of the asset played by the game
@@ -26,7 +26,7 @@ interface IAttributablePlayer {
       uint256 tokenId
     ) external view override
     returns (string memory) {
-      uint256 _attributes = IAttributable(_nft).attributesOf(tokenId, address(this), 0);
+      uint256 _attributes = IERC721Attributable(_nft).attributesOf(tokenId, address(this), 0);
       if (_attributes != 0) {
         return
           string(
