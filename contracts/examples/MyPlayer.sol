@@ -5,10 +5,10 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
 
-import "../IAttributable.sol";
-import "../IAttributablePlayer.sol";
+import "../IERC721Attributable.sol";
+import "../IERC721AttributablePlayer.sol";
 
-contract MyPlayer is IAttributablePlayer, Ownable, ERC165 {
+contract MyPlayer is IERC721AttributablePlayer, Ownable, ERC165 {
   address internal _operator;
 
   struct TokenData {
@@ -19,12 +19,12 @@ contract MyPlayer is IAttributablePlayer, Ownable, ERC165 {
   }
 
   // convenient function, for testing only
-  function getInterfaceIds() public view returns (bytes4, bytes4) {
-    return (type(IAttributable).interfaceId, type(IAttributablePlayer).interfaceId);
+  function getInterfaceIds() public pure returns (bytes4, bytes4) {
+    return (type(IERC721Attributable).interfaceId, type(IERC721AttributablePlayer).interfaceId);
   }
 
   function supportsInterface(bytes4 interfaceId) public view override returns (bool) {
-    return interfaceId == type(IAttributablePlayer).interfaceId || super.supportsInterface(interfaceId);
+    return interfaceId == type(IERC721AttributablePlayer).interfaceId || super.supportsInterface(interfaceId);
   }
 
   function setOperator(address operator) external onlyOwner {
@@ -38,11 +38,11 @@ contract MyPlayer is IAttributablePlayer, Ownable, ERC165 {
   ) external {
     require(_operator != address(0) && _operator == _msgSender(), "Not the operator");
     uint256 attributes = 1 | (uint256(data.level) << 8) | (uint256(data.stamina) << 16) | (uint256(uint160(data.winner)) << 48);
-    IAttributable(_nft).updateAttributes(tokenId, 0, attributes);
+    IERC721Attributable(_nft).updateAttributes(tokenId, 0, attributes);
   }
 
   function attributesOf(address _nft, uint256 tokenId) external view override returns (string memory) {
-    uint256 _attributes = IAttributable(_nft).attributesOf(tokenId, address(this), 0);
+    uint256 _attributes = IERC721Attributable(_nft).attributesOf(tokenId, address(this), 0);
     if (_attributes != 0) {
       return
         string(

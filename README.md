@@ -1,7 +1,5 @@
-# Attributable
+# ERC721Attributable
 A proposal for a standard approach to manage attributes on chain for NFTs
-
-### ALERT This is a work in progress and breaking changes can be introduced at any time.
 
 ## Premise
 
@@ -19,7 +17,7 @@ There are a few proposals to extend the metadata provided by JSON files (like ht
 
 ## Why do we need a common standard for on-chain metadata?
 
-People talks every day about having NFTs that can be moved around games. The problem is that, despite the good intention, that is not possible in most cases. A standard NFT is not intended for it. What it misses is the flexibility necessary to allow any player out there (a game, a metaverse, whatever) to use the NFT inside a game, in total transparency, and in a shared way. The idea behind Attributable is that your NFT:
+People talks every day about having NFTs that can be moved around games. The problem is that, despite the good intention, that is not possible in most cases. A standard NFT is not intended for it. What it misses is the flexibility necessary to allow any player out there (a game, a metaverse, whatever) to use the NFT inside a game, in total transparency, and in a shared way. The idea behind ERC721Attributable is that your NFT:
 
 1. can be used by any game, i.e., any game access the data in the same format, encoding/decoding them for its purposes
 2. only the NFT owner can authorize the game
@@ -27,7 +25,7 @@ People talks every day about having NFTs that can be moved around games. The pro
 
 Point 2 is necessary because you don't want any player adds data to your NFT. For example, a porn game can add you PfP. Maybe you don't like it. For sure, you don't want it if the player is involved in some criminal activity.
 
-Point 3 is necessary because you can cheat after you authorize a game if you alter the data that the game sets. For example, in Mobland, a character can be wounded and go into a coma. If that character is not cured in the maximum allowed time, the character will die. On the market, a dead character will probably have a much lower value than a character in good health. But, right now, there is no way to get it. If the character is Attributable, that value can be stored in the NFT and be visible to anyone.
+Point 3 is necessary because you can cheat after you authorize a game if you alter the data that the game sets. For example, in Mobland, a character can be wounded and go into a coma. If that character is not cured in the maximum allowed time, the character will die. On the market, a dead character will probably have a much lower value than a character in good health. But, right now, there is no way to get it. If the character is ERC721Attributable, that value can be stored in the NFT and be visible to anyone.
 
 How? A marketplace like OpenSea can listen to the emitted event and record any new authorization. Then, it can query the authorized game to get the on-chain attributes of that NFT. (Of course, the game can also set off-chain dynamic attributes to make its data more broadly available.)
 
@@ -48,18 +46,18 @@ Regardless, the optimal data format is not central, and the choice of what to us
 
 ## The interfaces
 
-### IAttributable - the NFT should extend it
+### IERC721Attributable - the NFT should extend it
 
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
 /**
-   @title IAttributable Cross-player On-chain Attributes
+   @title IERC721Attributable Cross-player On-chain Attributes
     Version: 0.0.4
    ERC165 interfaceId is 0xc79cd306
    */
-interface IAttributable {
+interface IERC721Attributable {
   /**
      @dev Emitted when the attributes for an id and a player is set.
           The function must be called by the owner of the asset to authorize a player to set
@@ -136,7 +134,7 @@ interface IAttributable {
 
 ```
 
-### IAttributablePlayer - the player should extend it
+### IERC721AttributablePlayer - the player should extend it
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
@@ -145,11 +143,11 @@ pragma solidity ^0.8.4;
 // Francesco Sullo <francesco@sullo.co>
 
 /**
-   @title IAttributablePlayer Player of an attributable asset
+   @title IERC721AttributablePlayer Player of an attributable asset
     Version: 0.0.1
    ERC165 interfaceId is 0x72261e7d
    */
-interface IAttributablePlayer {
+interface IERC721AttributablePlayer {
   /**
     @dev returns the attributes in a readable way
     @param _asset The address of the asset played by the game
@@ -170,7 +168,7 @@ Let's show here just the function attributesOf in the player:
 
 ```solidity
 function attributesOf(address _nft, uint256 tokenId) external override view returns (string memory) {
-    uint256 _attributes = IAttributable(_nft).attributesOf(tokenId, address(this), 0);
+    uint256 _attributes = IERC721Attributable(_nft).attributesOf(tokenId, address(this), 0);
     if (_attributes != 0) {
       return
         string(
@@ -255,7 +253,7 @@ Notice that the NFT does not encode anything, it is the player who knows what th
                          (uint256(data.stamina) << 16) | 
                          (uint256(uint160(data.winner)) << 48);
 
-    IAttributable(_nft).updateAttributes(tokenId, 0, attributes);
+    IERC721Attributable(_nft).updateAttributes(tokenId, 0, attributes);
   }
 ```
 
@@ -271,17 +269,22 @@ You may need to install the peer dependencies too, i.e., the OpenZeppelin contra
 To use it, in your smart contract import it as
 ```solidity
 
-import "@ndujalabs/attributable/contracts/IAttributable.sol";
-import "@ndujalabs/attributable/contracts/IAttributablePlayer.sol";
+import "@ndujalabs/attributable/contracts/IERC721Attributable.sol";
+import "@ndujalabs/attributable/contracts/IERC721AttributablePlayer.sol";
 ```
 
 ## Implementations
 
 1. **Everdragons2GenesisV3** https://github.com/ndujaLabs/everdragons2-core/blob/main/contracts/V2-V3/Everdragons2GenesisV3.sol
 
-Feel free to make a PR to add your contracts.
+1. **MOBLAND In-game Assets** https://github.com/superpowerlabs/in-game-assets/blob/main/contracts/SuperpowerNFTBase.sol#L128~~~~
+
+Feel free to make a PR to add your implementation.
 
 ## History
+
+**0.1.0**
+- Renamed from **Attributable** to **ERC721Attributable** for clarity
 
 **0.0.4**
 - Add event AttributesUpdated
@@ -297,7 +300,7 @@ Feel free to make a PR to add your contracts.
 ## Copyright
 
 (c) 2022, Francesco Sullo <francesco@sullo.co>
-
+~~~~
 ## License
 
 MIT
