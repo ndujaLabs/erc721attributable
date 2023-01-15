@@ -261,7 +261,7 @@ Notice that the NFT does not encode anything, it is the player who knows what th
 
 To install it, launch 
 ``` 
-npm i -d @ndujalabs/attributable
+npm i -d @ndujalabs/erc721attributable
 ```
 
 You may need to install the peer dependencies too, i.e., the OpenZeppelin contracts.
@@ -269,15 +269,15 @@ You may need to install the peer dependencies too, i.e., the OpenZeppelin contra
 To use it, in your smart contract import it as
 ```solidity
 
-import "@ndujalabs/attributable/contracts/IERC721Attributable.sol";
-import "@ndujalabs/attributable/contracts/IERC721AttributablePlayer.sol";
+import "@ndujalabs/erc721attributable/contracts/IERC721Attributable.sol";
+import "@ndujalabs/erc721attributable/contracts/IERC721AttributablePlayer.sol";
 ```
 
 ## Implementations
 
 1. **Everdragons2GenesisV3** https://github.com/ndujaLabs/everdragons2-core/blob/main/contracts/V2-V3/Everdragons2GenesisV3.sol
 
-1. **MOBLAND In-game Assets** https://github.com/superpowerlabs/in-game-assets/blob/main/contracts/SuperpowerNFTBase.sol#L128~~~~
+1. **MOBLAND In-game Assets** https://github.com/superpowerlabs/in-game-assets/blob/main/contracts/SuperpowerNFTBase.sol#L128
 
 Feel free to make a PR to add your implementation.
 
@@ -300,7 +300,7 @@ Feel free to make a PR to add your implementation.
 ## Copyright
 
 (c) 2022, Francesco Sullo <francesco@sullo.co>
-~~~~
+
 ## License
 
 MIT
