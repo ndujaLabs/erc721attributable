@@ -59,7 +59,7 @@ interface IERC721Attributable {
       the marketplace can query the player to get the attributes of the NFT in within
       the game.
      @notice This is V2 of the interface. It is compatible with V1, but it does not emit the
-      AttributesUpdated event anymore, replacing it with AttributesUpdatedBy. It implies
+      AttributesUpdated event anymore, replacing it with AttributesUpdated. It implies
       that any contract using this interface must be updated to use the new event. 
    */
   event AttributesInitializedFor(uint256 indexed _id, address indexed _player);
@@ -67,7 +67,7 @@ interface IERC721Attributable {
   /**
    @dev Emitted when the attributes for an id are updated in relation to a specific player.
    */
-  event AttributesUpdatedBy(uint256 indexed _id, address indexed _player);
+  event AttributesUpdated(uint256 indexed _id, address indexed _player);
 
   /**
      @dev It returns the on-chain attributes of a specific id

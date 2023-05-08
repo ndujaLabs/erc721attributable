@@ -60,7 +60,7 @@ describe("ERC721Attributable", function () {
         myToken.address,
         tokenId,
         tokenData
-    )).emit(myToken, "AttributesUpdatedBy").withArgs(tokenId, myPlayer.address);
+    )).emit(myToken, "AttributesUpdated").withArgs(tokenId, myPlayer.address);
 
     attributes = await myToken.attributesOf(tokenId, myPlayer.address, 0);
     expect(attributes).to.equal("106752917089902064595775439782685550631690247383499200986087937");
