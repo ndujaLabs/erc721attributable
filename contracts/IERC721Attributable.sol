@@ -6,26 +6,28 @@ pragma solidity ^0.8.4;
 
 /**
    @title IERC721Attributable Cross-player On-chain Attributes
-    Version: 0.0.4
+    Version: 0.2.0
    ERC165 interfaceId is 0xc79cd306
    */
 interface IERC721Attributable {
   /**
      @dev Emitted when the attributes for an id and a player is set.
-          The function must be called by the owner of the asset to authorize a player to set
-          attributes on it. The rules for that are left to the asset.
-
-          This event is important because allows a marketplace to know that there are
-          dynamic attributes set on the NFT by a specific contract (the player) so that
-          the marketplace can query the player to get the attributes of the NFT in within
-          the game.
+      The function must be called by the owner of the asset to authorize a player to set
+      attributes on it. The rules for that are left to the asset.
+      This event is important because allows a marketplace to know that there are
+      dynamic attributes set on the NFT by a specific contract (the player) so that
+      the marketplace can query the player to get the attributes of the NFT in within
+      the game.
+     @notice This is V2 of the interface. It is compatible with V1, but it does not emit the
+      AttributesUpdated event anymore, replacing it with AttributesUpdatedBy. It implies
+      that any contract using this interface must be updated to use the new event.
    */
   event AttributesInitializedFor(uint256 indexed _id, address indexed _player);
 
   /**
-   @dev Emitted when the attributes for an id are updated.
+   @dev Emitted when the attributes for an id are updated in relation to a specific player.
    */
-  event AttributesUpdated(uint256 indexed _id);
+  event AttributesUpdatedBy(uint256 indexed _id, address indexed _player);
 
   /**
      @dev It returns the on-chain attributes of a specific id
