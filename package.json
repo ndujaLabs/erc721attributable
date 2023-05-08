@@ -1,6 +1,6 @@
 {
   "name": "@ndujalabs/erc721attributable",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A proposal for on-chain attributes for NFT and other assets",
   "publishConfig": {
     "access": "public"

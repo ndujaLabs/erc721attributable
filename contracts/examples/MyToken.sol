@@ -45,7 +45,7 @@ contract MyToken is ERC721, Ownable, IERC721Attributable {
     // Alternatively, the it could use a separate boolean to track the authorized players
     // but that would take extra gas without a clear advantage.
     _tokenAttributes[_id][_msgSender()][_index] = _attributes;
-    emit AttributesUpdated(_id);
+    emit AttributesUpdated(_id, _msgSender());
   }
 
   function mint(address to) external onlyOwner {
