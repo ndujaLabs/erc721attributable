@@ -17,13 +17,13 @@ There are a few proposals to extend the metadata provided by JSON files (like ht
 
 ## Why do we need a common standard for on-chain metadata?
 
-People talks every day about having NFTs that can be moved around games. The problem is that, despite the good intention, that is not possible in most cases. A standard NFT is not intended for it. What it misses is the flexibility necessary to allow any player out there (a game, a metaverse, whatever) to use the NFT inside a game, in total transparency, and in a shared way. The idea behind ERC721Attributable is that your NFT:
+People talk every day about having NFTs that can be moved between games. The problem is that, despite the best intentions, that is not possible in most cases. A standard NFT is not intended for this. It misses the flexibility necessary to allow any player out there (a game, a metaverse, whatever) to use the NFT inside a game, in total transparency, and in a shared way. The idea behind ERC721Attributable is that your NFT:
 
 1. can be used by any game, i.e., any game access the data in the same format, encoding/decoding them for its purposes
 2. only the NFT owner can authorize the game
 3. only the game can modify its attributes
 
-Point 2 is necessary because you don't want any player adds data to your NFT. For example, a porn game can add you PfP. Maybe you don't like it. For sure, you don't want it if the player is involved in some criminal activity.
+Point 2 is necessary because you don't want any player adding data to your NFT. For example, a porn game could add you PfP, you might not want that. And you sure don't want it if the player is involved in some criminal activity.
 
 Point 3 is necessary because you can cheat after you authorize a game if you alter the data that the game sets. For example, in Mobland, a character can be wounded and go into a coma. If that character is not cured in the maximum allowed time, the character will die. On the market, a dead character will probably have a much lower value than a character in good health. But, right now, there is no way to get it. If the character is ERC721Attributable, that value can be stored in the NFT and be visible to anyone.
 
